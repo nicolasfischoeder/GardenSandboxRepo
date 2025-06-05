@@ -15,6 +15,7 @@ class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
 class UBuildingComponent;
+class UResourceComponent;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -50,6 +51,10 @@ class AGardenSandboxCharacter : public ACharacter
         /** Building Component */
         UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Building, meta = (AllowPrivateAccess = "true"))
         UBuildingComponent* BuildingComponent;
+
+        /** Holds resources for the character */
+        UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Resources, meta = (AllowPrivateAccess = "true"))
+        UResourceComponent* ResourceComponent;
 	
 
 	
