@@ -23,11 +23,6 @@ UBuildingComponent::UBuildingComponent()
     bPlacementValid = true;
 }
 
-void UBuildingComponent::BeginPlay()
-{
-    Super::BeginPlay();
-}
-
 bool UBuildingComponent::AttachComponent(AGardenSandboxCharacter* TargetCharacter)
 {
     Character = TargetCharacter;

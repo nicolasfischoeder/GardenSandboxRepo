@@ -2,6 +2,8 @@
 
 #include "GardenSandboxPickUpComponent.h"
 #include "ResourceComponent.h"
+#include "GardenSandboxCharacter.h"
+
 
 UGardenSandboxPickUpComponent::UGardenSandboxPickUpComponent()
 {
@@ -19,17 +21,15 @@ void UGardenSandboxPickUpComponent::BeginPlay()
 
 void UGardenSandboxPickUpComponent::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// Checking if it is a First Person Character overlapping
-	AGardenSandboxCharacter* Character = Cast<AGardenSandboxCharacter>(OtherActor);
+        // Checking if it is a First Person Character overlapping
+        AGardenSandboxCharacter* Character = Cast<AGardenSandboxCharacter>(OtherActor);
         if(Character != nullptr)
         {
-                // Notify that the actor is being picked up
-                OnPickUp.Broadcast(Character);
-
                 if (Character->ResourceComponent)
                 {
                         Character->ResourceComponent->AddResource(ResourceType, ResourceAmount);
                 }
+
 
                 // Unregister from the Overlap Event so it is no longer triggered
                 OnComponentBeginOverlap.RemoveAll(this);

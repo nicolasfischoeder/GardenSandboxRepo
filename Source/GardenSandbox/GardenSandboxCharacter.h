@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
-#include "Net/UnrealNetwork.h"
 #include "GardenSandboxCharacter.generated.h"
 
 class UInputComponent;
@@ -59,8 +58,7 @@ class AGardenSandboxCharacter : public ACharacter
 
 	
 public:
-	AGardenSandboxCharacter();
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+        AGardenSandboxCharacter();
 protected:
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);

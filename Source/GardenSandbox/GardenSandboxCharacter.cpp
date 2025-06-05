@@ -51,12 +51,6 @@ AGardenSandboxCharacter::AGardenSandboxCharacter()
 }
 
 //////////////////////////////////////////////////////////////////////////// Input
-void AGardenSandboxCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-}
-
-
 void AGardenSandboxCharacter::NotifyControllerChanged()
 {
         Super::NotifyControllerChanged();

@@ -17,26 +17,6 @@ void UResourceComponent::AddResource(EResourceType ResourceName, int32 Amount)
     Current += Amount;
 }
 
-bool UResourceComponent::ConsumeResource(EResourceType ResourceName, int32 Amount)
-{
-    if (Amount <= 0)
-    {
-        return true;
-    }
-    int32* Current = Resources.Find(ResourceName);
-    if (!Current || *Current < Amount)
-    {
-        return false;
-    }
-    *Current -= Amount;
-    return true;
-}
-
-int32 UResourceComponent::GetResourceAmount(EResourceType ResourceName) const
-{
-    const int32* Current = Resources.Find(ResourceName);
-    return Current ? *Current : 0;
-}
 
 bool UResourceComponent::ConsumeResources(const TArray<FResourceAmount>& Costs)
 {
@@ -64,3 +44,4 @@ void UResourceComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 
     DOREPLIFETIME(UResourceComponent, Resources);
 }
+

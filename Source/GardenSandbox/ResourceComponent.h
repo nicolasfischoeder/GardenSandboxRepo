@@ -18,7 +18,6 @@ enum class EResourceType : uint8
     Herb        UMETA(DisplayName="Kräuter")
 };
 
-
 USTRUCT(BlueprintType)
 struct FResourceAmount
 {
@@ -51,6 +50,7 @@ public:
     UFUNCTION(BlueprintCallable, Category="Resources")
     bool ConsumeResources(const TArray<FResourceAmount>& Costs);
 
+
     /** Get current amount of resource */
     UFUNCTION(BlueprintCallable, Category="Resources")
     int32 GetResourceAmount(EResourceType Resource) const;
@@ -59,7 +59,9 @@ public:
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Resources")
+    /** Current resource amounts */
+    UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category="Resources")
+
     TMap<EResourceType, int32> Resources;
 };
 
