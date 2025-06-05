@@ -13,8 +13,20 @@ void UResourceComponent::AddResource(EResourceType ResourceName, int32 Amount)
     {
         return;
     }
-    int32& Current = Resources.FindOrAdd(ResourceName);
-    Current += Amount;
+    if (FResourceAmount* Existing = Resources.FindByPredicate([ResourceName](const FResourceAmount& Res)
+    {
+        return Res.Type == ResourceName;
+    }))
+    {
+        Existing->Amount += Amount;
+    }
+    else
+    {
+        FResourceAmount NewRes;
+        NewRes.Type = ResourceName;
+        NewRes.Amount = Amount;
+        Resources.Add(NewRes);
+    }
 }
 
 
@@ -22,8 +34,11 @@ bool UResourceComponent::ConsumeResources(const TArray<FResourceAmount>& Costs)
 {
     for (const FResourceAmount& Cost : Costs)
     {
-        int32* Current = Resources.Find(Cost.Type);
-        if (!Current || *Current < Cost.Amount)
+        FResourceAmount* Current = Resources.FindByPredicate([&Cost](const FResourceAmount& Res)
+        {
+            return Res.Type == Cost.Type;
+        });
+        if (!Current || Current->Amount < Cost.Amount)
         {
             return false;
         }
@@ -31,8 +46,22 @@ bool UResourceComponent::ConsumeResources(const TArray<FResourceAmount>& Costs)
 
     for (const FResourceAmount& Cost : Costs)
     {
-        int32& Current = Resources.FindOrAdd(Cost.Type);
-        Current -= Cost.Amount;
+        FResourceAmount* Current = Resources.FindByPredicate([&Cost](const FResourceAmount& Res)
+        {
+            return Res.Type == Cost.Type;
+        });
+        if (Current)
+        {
+            Current->Amount -= Cost.Amount;
+        }
+        else
+        {
+            // Should not happen due to above checks, but handle gracefully
+            FResourceAmount NewRes;
+            NewRes.Type = Cost.Type;
+            NewRes.Amount = -Cost.Amount;
+            Resources.Add(NewRes);
+        }
     }
 
     return true;
