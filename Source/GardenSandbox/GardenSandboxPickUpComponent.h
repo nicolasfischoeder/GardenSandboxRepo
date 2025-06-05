@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/SphereComponent.h"
+#include "GardenSandboxCharacter.h"
+#include "ResourceComponent.h"
 #include "GardenSandboxPickUpComponent.generated.h"
 
 enum class EResourceType : uint8;
@@ -14,6 +16,11 @@ class GARDENSANDBOX_API UGardenSandboxPickUpComponent : public USphereComponent
         GENERATED_BODY()
 
 public:
+
+	
+	/** Delegate to whom anyone can subscribe to receive this event */
+        UPROPERTY(BlueprintAssignable, Category = "Interaction")
+        FOnPickUp OnPickUp;
 
         /** Type of resource to give when picked up */
         UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Resources")

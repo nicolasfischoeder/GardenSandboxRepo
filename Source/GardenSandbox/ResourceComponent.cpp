@@ -17,6 +17,7 @@ void UResourceComponent::AddResource(EResourceType ResourceName, int32 Amount)
     Current += Amount;
 }
 
+
 bool UResourceComponent::ConsumeResources(const TArray<FResourceAmount>& Costs)
 {
     for (const FResourceAmount& Cost : Costs)

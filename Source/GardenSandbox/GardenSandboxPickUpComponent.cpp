@@ -4,6 +4,7 @@
 #include "ResourceComponent.h"
 #include "GardenSandboxCharacter.h"
 
+
 UGardenSandboxPickUpComponent::UGardenSandboxPickUpComponent()
 {
 	// Setup the Sphere Collision
@@ -28,6 +29,7 @@ void UGardenSandboxPickUpComponent::OnSphereBeginOverlap(UPrimitiveComponent* Ov
                 {
                         Character->ResourceComponent->AddResource(ResourceType, ResourceAmount);
                 }
+
 
                 // Unregister from the Overlap Event so it is no longer triggered
                 OnComponentBeginOverlap.RemoveAll(this);
