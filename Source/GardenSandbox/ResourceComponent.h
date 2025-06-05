@@ -2,6 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "ResourceComponent.generated.h"
+
 
 UENUM(BlueprintType)
 enum class EResourceType : uint8
@@ -29,7 +31,6 @@ struct FResourceAmount
     int32 Amount = 0;
 };
 
-#include "ResourceComponent.generated.h"
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GARDENSANDBOX_API UResourceComponent : public UActorComponent
@@ -53,6 +54,9 @@ public:
     /** Get current amount of resource */
     UFUNCTION(BlueprintCallable, Category="Resources")
     int32 GetResourceAmount(EResourceType Resource) const;
+
+    /** Register replication properties */
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Resources")

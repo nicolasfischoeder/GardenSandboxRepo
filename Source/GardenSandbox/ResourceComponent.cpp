@@ -1,8 +1,10 @@
 #include "ResourceComponent.h"
+#include "Net/UnrealNetwork.h"
 
 UResourceComponent::UResourceComponent()
 {
     PrimaryComponentTick.bCanEverTick = false;
+    SetIsReplicatedByDefault(true);
 }
 
 void UResourceComponent::AddResource(EResourceType ResourceName, int32 Amount)
@@ -56,3 +58,9 @@ bool UResourceComponent::ConsumeResources(const TArray<FResourceAmount>& Costs)
     return true;
 }
 
+void UResourceComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(UResourceComponent, Resources);
+}

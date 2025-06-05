@@ -100,6 +100,14 @@ void UBuildingComponent::Place()
         return;
     }
 
+    if (Character && Character->ResourceComponent)
+    {
+        if (!Character->ResourceComponent->ConsumeResources(BuildingData->RequiredResources))
+        {
+            return;
+        }
+    }
+
     FVector Loc = GhostActor->GetActorLocation();
     FRotator Rot = GhostActor->GetActorRotation();
     GhostActor->Destroy();
