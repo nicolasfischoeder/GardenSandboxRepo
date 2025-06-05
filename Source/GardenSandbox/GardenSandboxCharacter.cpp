@@ -34,9 +34,7 @@ AGardenSandboxCharacter::AGardenSandboxCharacter()
 	Mesh1P->CastShadow = false;
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 	
-	// Stellen Sie sicher, dass das 1P-Mesh nur der Owner sieht
-	Mesh1P->SetOnlyOwnerSee(true);
-	//Mesh1P->SetOwnerNoSee(false);
+       //Mesh1P->SetOwnerNoSee(false);
 
 	GetMesh()->SetOwnerNoSee(true);
 	
