@@ -8,6 +8,8 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "BuildingComponent.h"
 #include "ResourceComponent.h"
+#include "HealthComponent.h"
+#include "Engine/CollisionProfile.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
@@ -39,8 +41,11 @@ AGardenSandboxCharacter::AGardenSandboxCharacter()
         // Create building component
         BuildingComponent = CreateDefaultSubobject<UBuildingComponent>(TEXT("BuildingComponent"));
 
-        // Create resource component
-        ResourceComponent = CreateDefaultSubobject<UResourceComponent>(TEXT("ResourceComponent"));
+    // Create resource component
+    ResourceComponent = CreateDefaultSubobject<UResourceComponent>(TEXT("ResourceComponent"));
+
+    // Create health component
+    HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 
         // Stellen Sie sicher, dass das 1P-Mesh nur der Owner sieht
 	Mesh1P->SetOnlyOwnerSee(true);
@@ -107,13 +112,35 @@ void AGardenSandboxCharacter::Move(const FInputActionValue& Value)
 
 void AGardenSandboxCharacter::Look(const FInputActionValue& Value)
 {
-	// input is a Vector2D
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
+        // input is a Vector2D
+        FVector2D LookAxisVector = Value.Get<FVector2D>();
 
 	if (GetController() != nullptr)
 	{
 		// add yaw and pitch input to controller
-		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);
-	}
+                AddControllerYawInput(LookAxisVector.X);
+                AddControllerPitchInput(LookAxisVector.Y);
+        }
+}
+
+void AGardenSandboxCharacter::BeginPlay()
+{
+        Super::BeginPlay();
+
+        SetupHitboxes();
+}
+
+void AGardenSandboxCharacter::SetupHitboxes()
+{
+        USkeletalMeshComponent* ThirdPersonMesh = GetMesh();
+        if (!ThirdPersonMesh)
+        {
+                return;
+        }
+
+        ThirdPersonMesh->SetCollisionProfileName(TEXT("Pawn"));
+        ThirdPersonMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+        ThirdPersonMesh->SetGenerateOverlapEvents(true);
+        ThirdPersonMesh->SetNotifyRigidBodyCollision(true);
+        ThirdPersonMesh->SetAllBodiesNotifyRigidBodyCollision(true);
 }
