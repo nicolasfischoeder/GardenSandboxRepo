@@ -115,6 +115,17 @@ void UBuildingComponent::Place()
     GhostMeshComponents.Empty();
     bPlacementValid = true;
 
+    if (Character && Character->ResourceComponent)
+    {
+
+      
+        if (!Character->ResourceComponent->ConsumeResource(BuildingData->RequiredResource, BuildingData->ResourceCost))
+        {
+            bIsPlacing = false;
+            return;
+        }
+    }
+
     if (UWorld* World = GetWorld())
     {
         World->SpawnActor<AActor>(BuildingData->BuildingClass, Loc, Rot);

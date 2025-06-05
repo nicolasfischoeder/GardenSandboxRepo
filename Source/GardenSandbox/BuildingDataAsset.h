@@ -24,4 +24,5 @@ public:
     /** Resources required to build */
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Resources")
     TArray<FResourceAmount> RequiredResources;
+
 };

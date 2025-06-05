@@ -64,4 +64,3 @@ void UResourceComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 
     DOREPLIFETIME(UResourceComponent, Resources);
 }
-

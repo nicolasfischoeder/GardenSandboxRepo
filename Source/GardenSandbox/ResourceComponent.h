@@ -4,6 +4,7 @@
 #include "Components/ActorComponent.h"
 #include "ResourceComponent.generated.h"
 
+
 UENUM(BlueprintType)
 enum class EResourceType : uint8
 {
@@ -17,7 +18,7 @@ enum class EResourceType : uint8
     Herb        UMETA(DisplayName="Kräuter")
 };
 
-/** Struct storing a single resource and amount */
+
 USTRUCT(BlueprintType)
 struct FResourceAmount
 {
@@ -29,6 +30,7 @@ struct FResourceAmount
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Resources")
     int32 Amount = 0;
 };
+
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GARDENSANDBOX_API UResourceComponent : public UActorComponent
@@ -57,8 +59,7 @@ public:
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
-    /** Current resource amounts */
-    UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category="Resources")
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Resources")
     TMap<EResourceType, int32> Resources;
 };
 
