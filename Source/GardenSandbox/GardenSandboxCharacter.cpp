@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "BuildingComponent.h"
+#include "ResourceComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
@@ -38,6 +39,9 @@ AGardenSandboxCharacter::AGardenSandboxCharacter()
         // Create building component
         BuildingComponent = CreateDefaultSubobject<UBuildingComponent>(TEXT("BuildingComponent"));
 
+        // Create resource component
+        ResourceComponent = CreateDefaultSubobject<UResourceComponent>(TEXT("ResourceComponent"));
+
         // Stellen Sie sicher, dass das 1P-Mesh nur der Owner sieht
 	Mesh1P->SetOnlyOwnerSee(true);
 	//Mesh1P->SetOwnerNoSee(false);
@@ -47,12 +51,6 @@ AGardenSandboxCharacter::AGardenSandboxCharacter()
 }
 
 //////////////////////////////////////////////////////////////////////////// Input
-void AGardenSandboxCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-}
-
-
 void AGardenSandboxCharacter::NotifyControllerChanged()
 {
         Super::NotifyControllerChanged();

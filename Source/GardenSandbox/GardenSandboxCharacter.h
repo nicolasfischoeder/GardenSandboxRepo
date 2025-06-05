@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
-#include "Net/UnrealNetwork.h"
 #include "GardenSandboxCharacter.generated.h"
 
 class UInputComponent;
@@ -15,6 +14,7 @@ class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
 class UBuildingComponent;
+class UResourceComponent;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -50,12 +50,15 @@ class AGardenSandboxCharacter : public ACharacter
         /** Building Component */
         UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Building, meta = (AllowPrivateAccess = "true"))
         UBuildingComponent* BuildingComponent;
+
+        /** Holds resources for the character */
+        UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Resources, meta = (AllowPrivateAccess = "true"))
+        UResourceComponent* ResourceComponent;
 	
 
 	
 public:
-	AGardenSandboxCharacter();
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+        AGardenSandboxCharacter();
 protected:
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);

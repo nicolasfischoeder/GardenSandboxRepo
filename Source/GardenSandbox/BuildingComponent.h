@@ -9,6 +9,7 @@ class UInputAction;
 class UInputMappingContext;
 class UMaterialInterface;
 class UMeshComponent;
+class UBuildingDataAsset;
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GARDENSANDBOX_API UBuildingComponent : public UActorComponent
@@ -26,8 +27,9 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Building")
     float RotationStep = 90.f;
 
+    /** Data asset describing the building to place */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Building")
-    TSubclassOf<AActor> BuildingClass;
+    UBuildingDataAsset* BuildingData;
 
     /** Material used when placement is valid */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Building|Visual")
@@ -60,7 +62,6 @@ public:
     void Rotate();
 
 protected:
-    virtual void BeginPlay() override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
