@@ -15,6 +15,7 @@ class UInputMappingContext;
 struct FInputActionValue;
 class UBuildingComponent;
 class UResourceComponent;
+class UHealthComponent;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -54,17 +55,27 @@ class AGardenSandboxCharacter : public ACharacter
         /** Holds resources for the character */
         UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Resources, meta = (AllowPrivateAccess = "true"))
         UResourceComponent* ResourceComponent;
+
+        /** Tracks the character's health */
+        UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Health, meta = (AllowPrivateAccess = "true"))
+        UHealthComponent* HealthComponent;
 	
 
 	
 public:
         AGardenSandboxCharacter();
 protected:
-	/** Called for movement input */
-	void Move(const FInputActionValue& Value);
+        /** Called for movement input */
+        void Move(const FInputActionValue& Value);
 
-	/** Called for looking input */
-	void Look(const FInputActionValue& Value);
+        /** Called for looking input */
+        void Look(const FInputActionValue& Value);
+
+        /** Called when the actor begins play to configure hitboxes */
+        virtual void BeginPlay() override;
+
+        /** Setup collision using the mesh's physics asset */
+        void SetupHitboxes();
 
 protected:
 	// APawn interface

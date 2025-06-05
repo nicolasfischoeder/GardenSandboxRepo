@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "HealthComponent.h"
 #include "GardenBuildingBase.generated.h"
 
 UCLASS()
@@ -14,6 +15,9 @@ public:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
     UStaticMeshComponent* MeshComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    UHealthComponent* HealthComponent;
 
 };
 
