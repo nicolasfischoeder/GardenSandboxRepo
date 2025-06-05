@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "BuildingComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
@@ -32,9 +33,12 @@ AGardenSandboxCharacter::AGardenSandboxCharacter()
 	Mesh1P->SetupAttachment(FirstPersonCameraComponent);
 	Mesh1P->bCastDynamicShadow = false;
 	Mesh1P->CastShadow = false;
-	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
-	
-	// Stellen Sie sicher, dass das 1P-Mesh nur der Owner sieht
+       Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
+
+        // Create building component
+        BuildingComponent = CreateDefaultSubobject<UBuildingComponent>(TEXT("BuildingComponent"));
+
+        // Stellen Sie sicher, dass das 1P-Mesh nur der Owner sieht
 	Mesh1P->SetOnlyOwnerSee(true);
 	//Mesh1P->SetOwnerNoSee(false);
 
@@ -51,16 +55,21 @@ void AGardenSandboxCharacter::GetLifetimeReplicatedProps(TArray<FLifetimePropert
 
 void AGardenSandboxCharacter::NotifyControllerChanged()
 {
-	Super::NotifyControllerChanged();
+        Super::NotifyControllerChanged();
 
-	// Add Input Mapping Context
-	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
-		}
-	}
+        // Add Input Mapping Context
+        if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+        {
+                if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+                {
+                        Subsystem->AddMappingContext(DefaultMappingContext, 0);
+                }
+        }
+
+        if (BuildingComponent)
+        {
+                BuildingComponent->AttachComponent(this);
+        }
 }
 
 void AGardenSandboxCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
