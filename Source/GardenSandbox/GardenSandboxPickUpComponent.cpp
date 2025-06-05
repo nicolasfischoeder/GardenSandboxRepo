@@ -30,6 +30,8 @@ void UGardenSandboxPickUpComponent::OnSphereBeginOverlap(UPrimitiveComponent* Ov
                         Character->ResourceComponent->AddResource(ResourceType, ResourceAmount);
                 }
 
+                // Notify listeners that this pickup has been collected
+                OnPickUp.Broadcast();
 
                 // Unregister from the Overlap Event so it is no longer triggered
                 OnComponentBeginOverlap.RemoveAll(this);
