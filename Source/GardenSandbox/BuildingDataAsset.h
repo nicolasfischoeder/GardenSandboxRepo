@@ -21,11 +21,8 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Building")
     TSubclassOf<AActor> GhostClass;
 
-    /** Type of resource required to build */
+    /** Resources required to build */
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Resources")
-    EResourceType RequiredResource = EResourceType::Wood;
+    TArray<FResourceAmount> RequiredResources;
 
-    /** Amount of the resource required */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Resources")
-    int32 ResourceCost = 1;
 };

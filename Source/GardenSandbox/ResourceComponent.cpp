@@ -36,3 +36,23 @@ int32 UResourceComponent::GetResourceAmount(EResourceType ResourceName) const
     return Current ? *Current : 0;
 }
 
+bool UResourceComponent::ConsumeResources(const TArray<FResourceAmount>& Costs)
+{
+    for (const FResourceAmount& Cost : Costs)
+    {
+        int32* Current = Resources.Find(Cost.Type);
+        if (!Current || *Current < Cost.Amount)
+        {
+            return false;
+        }
+    }
+
+    for (const FResourceAmount& Cost : Costs)
+    {
+        int32& Current = Resources.FindOrAdd(Cost.Type);
+        Current -= Cost.Amount;
+    }
+
+    return true;
+}
+
