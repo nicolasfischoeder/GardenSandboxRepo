@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/SphereComponent.h"
 #include "GardenSandboxCharacter.h"
+#include "ResourceComponent.h"
 #include "GardenSandboxPickUpComponent.generated.h"
 
 // Declaration of the delegate that will be called when someone picks this up
@@ -14,15 +15,23 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPickUp, AGardenSandboxCharacter*,
 UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class GARDENSANDBOX_API UGardenSandboxPickUpComponent : public USphereComponent
 {
-	GENERATED_BODY()
+        GENERATED_BODY()
 
 public:
 	
 	/** Delegate to whom anyone can subscribe to receive this event */
-	UPROPERTY(BlueprintAssignable, Category = "Interaction")
-	FOnPickUp OnPickUp;
+        UPROPERTY(BlueprintAssignable, Category = "Interaction")
+        FOnPickUp OnPickUp;
 
-	UGardenSandboxPickUpComponent();
+        /** Type of resource to give when picked up */
+        UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Resources")
+        EResourceType ResourceType = EResourceType::Wood;
+
+        /** Amount of the resource to give */
+        UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Resources")
+        int32 ResourceAmount = 1;
+
+        UGardenSandboxPickUpComponent();
 protected:
 
 	/** Called when the game starts */
