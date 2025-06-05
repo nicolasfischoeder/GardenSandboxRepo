@@ -52,7 +52,6 @@ public:
 protected:
     /** Current resource amounts */
     UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category="Resources")
-
-    TMap<EResourceType, int32> Resources;
+    TArray<FResourceAmount> Resources;
 };
 
