@@ -112,13 +112,8 @@ void UBuildingComponent::Place()
 
     if (Character && Character->ResourceComponent)
     {
-
-      
-        if (!Character->ResourceComponent->ConsumeResource(BuildingData->RequiredResource, BuildingData->ResourceCost))
-        {
-            bIsPlacing = false;
-            return;
-        }
+        // Older versions consumed a single resource type here.
+        // This is now handled by ConsumeResources above.
     }
 
     if (UWorld* World = GetWorld())
