@@ -10,6 +10,9 @@
 
 enum class EResourceType : uint8;
 
+/** Delegate for pickup events */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPickUp);
+
 UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class GARDENSANDBOX_API UGardenSandboxPickUpComponent : public USphereComponent
 {
