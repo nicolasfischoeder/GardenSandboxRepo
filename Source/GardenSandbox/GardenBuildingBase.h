@@ -14,5 +14,6 @@ public:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
     UStaticMeshComponent* MeshComponent;
+
 };
 

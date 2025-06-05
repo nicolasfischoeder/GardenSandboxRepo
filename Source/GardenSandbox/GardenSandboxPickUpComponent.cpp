@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GardenSandboxPickUpComponent.h"
+#include "ResourceComponent.h"
 
 UGardenSandboxPickUpComponent::UGardenSandboxPickUpComponent()
 {
@@ -20,12 +21,17 @@ void UGardenSandboxPickUpComponent::OnSphereBeginOverlap(UPrimitiveComponent* Ov
 {
 	// Checking if it is a First Person Character overlapping
 	AGardenSandboxCharacter* Character = Cast<AGardenSandboxCharacter>(OtherActor);
-	if(Character != nullptr)
-	{
-		// Notify that the actor is being picked up
-		OnPickUp.Broadcast(Character);
+        if(Character != nullptr)
+        {
+                // Notify that the actor is being picked up
+                OnPickUp.Broadcast(Character);
 
-		// Unregister from the Overlap Event so it is no longer triggered
-		OnComponentBeginOverlap.RemoveAll(this);
-	}
+                if (Character->ResourceComponent)
+                {
+                        Character->ResourceComponent->AddResource(ResourceType, ResourceAmount);
+                }
+
+                // Unregister from the Overlap Event so it is no longer triggered
+                OnComponentBeginOverlap.RemoveAll(this);
+        }
 }

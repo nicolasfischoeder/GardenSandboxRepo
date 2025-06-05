@@ -9,6 +9,9 @@
 #include "Components/PrimitiveComponent.h"
 #include "Materials/MaterialInterface.h"
 #include "Components/MeshComponent.h"
+#include "GardenBuildingBase.h"
+#include "ResourceComponent.h"
+#include "BuildingDataAsset.h"
 
 UBuildingComponent::UBuildingComponent()
 {
@@ -58,7 +61,7 @@ bool UBuildingComponent::AttachComponent(AGardenSandboxCharacter* TargetCharacte
 
 void UBuildingComponent::StartPlacement()
 {
-    if (bIsPlacing || !BuildingClass)
+    if (bIsPlacing || !BuildingData || !BuildingData->BuildingClass)
     {
         return;
     }
@@ -69,7 +72,8 @@ void UBuildingComponent::StartPlacement()
         return;
     }
 
-    GhostActor = World->SpawnActor<AActor>(BuildingClass, FVector::ZeroVector, FRotator::ZeroRotator);
+    TSubclassOf<AActor> GhostToSpawn = BuildingData->GhostClass ? BuildingData->GhostClass : BuildingData->BuildingClass;
+    GhostActor = World->SpawnActor<AActor>(GhostToSpawn, FVector::ZeroVector, FRotator::ZeroRotator);
     if (GhostActor)
     {
         GhostActor->SetActorEnableCollision(false);
@@ -91,9 +95,17 @@ void UBuildingComponent::StartPlacement()
 
 void UBuildingComponent::Place()
 {
-    if (!bIsPlacing || !GhostActor || !BuildingClass)
+    if (!bIsPlacing || !GhostActor || !BuildingData || !BuildingData->BuildingClass)
     {
         return;
+    }
+
+    if (Character && Character->ResourceComponent)
+    {
+        if (!Character->ResourceComponent->ConsumeResources(BuildingData->RequiredResources))
+        {
+            return;
+        }
     }
 
     FVector Loc = GhostActor->GetActorLocation();
@@ -105,7 +117,7 @@ void UBuildingComponent::Place()
 
     if (UWorld* World = GetWorld())
     {
-        World->SpawnActor<AActor>(BuildingClass, Loc, Rot);
+        World->SpawnActor<AActor>(BuildingData->BuildingClass, Loc, Rot);
     }
 
     bIsPlacing = false;
