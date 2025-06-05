@@ -109,7 +109,9 @@ void UBuildingComponent::Place()
 
     if (Character && Character->ResourceComponent)
     {
-        if (!Character->ResourceComponent->ConsumeResources(BuildingData->RequiredResources))
+
+      
+        if (!Character->ResourceComponent->ConsumeResource(BuildingData->RequiredResource, BuildingData->ResourceCost))
         {
             bIsPlacing = false;
             return;

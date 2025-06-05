@@ -16,7 +16,7 @@ enum class EResourceType : uint8
     Herb        UMETA(DisplayName="Kräuter")
 };
 
-/** Struct storing a single resource and amount */
+
 USTRUCT(BlueprintType)
 struct FResourceAmount
 {
