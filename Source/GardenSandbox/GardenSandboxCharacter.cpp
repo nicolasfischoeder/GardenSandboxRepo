@@ -24,19 +24,12 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 AGardenSandboxCharacter::AGardenSandboxCharacter()
 {
-       // Load input mapping contexts
+       // Load default mapping context
        static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultMC(TEXT("/Game/FirstPerson/Input/IMC_Default.IMC_Default"));
        if (DefaultMC.Succeeded())
        {
                DefaultMappingContext = DefaultMC.Object;
        }
-
-       UInputMappingContext* LoadedBuildMapping = nullptr;
-       static ConstructorHelpers::FObjectFinder<UInputMappingContext> BuildMC(TEXT("/Game/FirstPerson/Input/IMC_Building.IMC_Building"));
-       if (BuildMC.Succeeded())
-       {
-               LoadedBuildMapping = BuildMC.Object;
-
 
        // Load input actions
        static ConstructorHelpers::FObjectFinder<UInputAction> JumpAct(TEXT("/Game/FirstPerson/Input/Actions/IA_Jump.IA_Jump"));
@@ -57,41 +50,37 @@ AGardenSandboxCharacter::AGardenSandboxCharacter()
                LookAction = LookAct.Object;
        }
 
-       UInputAction* LoadedStartBuilding = nullptr;
-       static ConstructorHelpers::FObjectFinder<UInputAction> StartBuildAct(TEXT("/Game/FirstPerson/Input/Actions/IA_EnterBuildingMode.IA_EnterBuildingMode"));
-       if (StartBuildAct.Succeeded())
-       {
-               LoadedStartBuilding = StartBuildAct.Object;
-       }
 
-       UInputAction* LoadedPlace = nullptr;
-       static ConstructorHelpers::FObjectFinder<UInputAction> PlaceAct(TEXT("/Game/FirstPerson/Input/Actions/IA_Place.IA_Place"));
-       if (PlaceAct.Succeeded())
-       {
-               LoadedPlace = PlaceAct.Object;
-       }
+       // Create building component and load its assets
+               static ConstructorHelpers::FObjectFinder<UInputMappingContext> BuildMC(TEXT("/Game/FirstPerson/Input/IMC_Building.IMC_Building"));
+               if (BuildMC.Succeeded())
+               {
+                       BuildingComponent->BuildMappingContext = BuildMC.Object;
+               }
 
-       UInputAction* LoadedCancel = nullptr;
-       static ConstructorHelpers::FObjectFinder<UInputAction> CancelAct(TEXT("/Game/FirstPerson/Input/Actions/IA_CancelPlacement.IA_CancelPlacement"));
-       if (CancelAct.Succeeded())
-       {
-               LoadedCancel = CancelAct.Object;
-       }
+               static ConstructorHelpers::FObjectFinder<UInputAction> StartBuildAct(TEXT("/Game/FirstPerson/Input/Actions/IA_EnterBuildingMode.IA_EnterBuildingMode"));
+               if (StartBuildAct.Succeeded())
+               {
+                       BuildingComponent->StartBuildingAction = StartBuildAct.Object;
+               }
 
-       UInputAction* LoadedRotate = nullptr;
-       static ConstructorHelpers::FObjectFinder<UInputAction> RotateAct(TEXT("/Game/FirstPerson/Input/Actions/IA_RotateBuilding.IA_RotateBuilding"));
-       if (RotateAct.Succeeded())
-       {
-               LoadedRotate = RotateAct.Object;
+               static ConstructorHelpers::FObjectFinder<UInputAction> PlaceAct(TEXT("/Game/FirstPerson/Input/Actions/IA_Place.IA_Place"));
+               if (PlaceAct.Succeeded())
+               {
+                       BuildingComponent->PlaceAction = PlaceAct.Object;
+               }
 
-       }
+               static ConstructorHelpers::FObjectFinder<UInputAction> CancelAct(TEXT("/Game/FirstPerson/Input/Actions/IA_CancelPlacement.IA_CancelPlacement"));
+               if (CancelAct.Succeeded())
+               {
+                       BuildingComponent->CancelAction = CancelAct.Object;
+               }
 
-       // Set size for collision capsule
-	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
-		
-	// Create a CameraComponent	
-	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
+               static ConstructorHelpers::FObjectFinder<UInputAction> RotateAct(TEXT("/Game/FirstPerson/Input/Actions/IA_RotateBuilding.IA_RotateBuilding"));
+               if (RotateAct.Succeeded())
+               {
+                       BuildingComponent->RotateAction = RotateAct.Object;
+               }
 	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, 60.f)); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 
