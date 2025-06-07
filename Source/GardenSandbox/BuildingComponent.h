@@ -10,6 +10,7 @@ class UInputMappingContext;
 class UMaterialInterface;
 class UMeshComponent;
 class UBuildingDataAsset;
+class AGardenBuildingBase;
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GARDENSANDBOX_API UBuildingComponent : public UActorComponent
@@ -66,7 +67,7 @@ protected:
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-    AActor* GhostActor;
+    AGardenBuildingBase* GhostActor;
     AGardenSandboxCharacter* Character;
     bool bIsPlacing;
     float CurrentYaw;
