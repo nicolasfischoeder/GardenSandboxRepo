@@ -48,25 +48,6 @@ class AGardenSandboxCharacter : public ACharacter
         UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
         class UInputAction* LookAction;
 
-        /** Mapping context used while building */
-        UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-        UInputMappingContext* BuildMappingContext;
-
-        /** Action to start building mode */
-        UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-        UInputAction* StartBuildingAction;
-
-        /** Action to place a building */
-        UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-        UInputAction* PlaceBuildingAction;
-
-        /** Action to cancel building placement */
-        UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-        UInputAction* CancelBuildingAction;
-
-        /** Optional action to rotate a placed building */
-        UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-        UInputAction* RotateBuildingAction;
 
 public:
         /** Building Component */
