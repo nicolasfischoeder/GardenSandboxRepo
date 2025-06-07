@@ -10,6 +10,9 @@
 #include "ResourceComponent.h"
 #include "HealthComponent.h"
 #include "Engine/CollisionProfile.h"
+#include "UObject/ConstructorHelpers.h"
+#include "InputMappingContext.h"
+#include "InputAction.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
@@ -21,7 +24,68 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 AGardenSandboxCharacter::AGardenSandboxCharacter()
 {
-	// Set size for collision capsule
+       // Load input mapping contexts
+       static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultMC(TEXT("/Game/FirstPerson/Input/IMC_Default.IMC_Default"));
+       if (DefaultMC.Succeeded())
+       {
+               DefaultMappingContext = DefaultMC.Object;
+       }
+
+       UInputMappingContext* LoadedBuildMapping = nullptr;
+       static ConstructorHelpers::FObjectFinder<UInputMappingContext> BuildMC(TEXT("/Game/FirstPerson/Input/IMC_Building.IMC_Building"));
+       if (BuildMC.Succeeded())
+       {
+               LoadedBuildMapping = BuildMC.Object;
+       }
+
+       // Load input actions
+       static ConstructorHelpers::FObjectFinder<UInputAction> JumpAct(TEXT("/Game/FirstPerson/Input/Actions/IA_Jump.IA_Jump"));
+       if (JumpAct.Succeeded())
+       {
+               JumpAction = JumpAct.Object;
+       }
+
+       static ConstructorHelpers::FObjectFinder<UInputAction> MoveAct(TEXT("/Game/FirstPerson/Input/Actions/IA_Move.IA_Move"));
+       if (MoveAct.Succeeded())
+       {
+               MoveAction = MoveAct.Object;
+       }
+
+       static ConstructorHelpers::FObjectFinder<UInputAction> LookAct(TEXT("/Game/FirstPerson/Input/Actions/IA_Look.IA_Look"));
+       if (LookAct.Succeeded())
+       {
+               LookAction = LookAct.Object;
+       }
+
+       UInputAction* LoadedStartBuilding = nullptr;
+       static ConstructorHelpers::FObjectFinder<UInputAction> StartBuildAct(TEXT("/Game/FirstPerson/Input/Actions/IA_EnterBuildingMode.IA_EnterBuildingMode"));
+       if (StartBuildAct.Succeeded())
+       {
+               LoadedStartBuilding = StartBuildAct.Object;
+       }
+
+       UInputAction* LoadedPlace = nullptr;
+       static ConstructorHelpers::FObjectFinder<UInputAction> PlaceAct(TEXT("/Game/FirstPerson/Input/Actions/IA_Place.IA_Place"));
+       if (PlaceAct.Succeeded())
+       {
+               LoadedPlace = PlaceAct.Object;
+       }
+
+       UInputAction* LoadedCancel = nullptr;
+       static ConstructorHelpers::FObjectFinder<UInputAction> CancelAct(TEXT("/Game/FirstPerson/Input/Actions/IA_CancelPlacement.IA_CancelPlacement"));
+       if (CancelAct.Succeeded())
+       {
+               LoadedCancel = CancelAct.Object;
+       }
+
+       UInputAction* LoadedRotate = nullptr;
+       static ConstructorHelpers::FObjectFinder<UInputAction> RotateAct(TEXT("/Game/FirstPerson/Input/Actions/IA_RotateBuilding.IA_RotateBuilding"));
+       if (RotateAct.Succeeded())
+       {
+               LoadedRotate = RotateAct.Object;
+       }
+
+       // Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
 		
 	// Create a CameraComponent	
@@ -38,8 +102,16 @@ AGardenSandboxCharacter::AGardenSandboxCharacter()
 	Mesh1P->CastShadow = false;
        Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
-        // Create building component
-        BuildingComponent = CreateDefaultSubobject<UBuildingComponent>(TEXT("BuildingComponent"));
+       // Create building component
+       BuildingComponent = CreateDefaultSubobject<UBuildingComponent>(TEXT("BuildingComponent"));
+       if (BuildingComponent)
+       {
+               BuildingComponent->BuildMappingContext = LoadedBuildMapping;
+               BuildingComponent->StartBuildingAction = LoadedStartBuilding;
+               BuildingComponent->PlaceAction = LoadedPlace;
+               BuildingComponent->CancelAction = LoadedCancel;
+               BuildingComponent->RotateAction = LoadedRotate;
+       }
 
     // Create resource component
     ResourceComponent = CreateDefaultSubobject<UResourceComponent>(TEXT("ResourceComponent"));
@@ -71,11 +143,6 @@ void AGardenSandboxCharacter::NotifyControllerChanged()
 
        if (BuildingComponent)
        {
-                BuildingComponent->BuildMappingContext = BuildMappingContext;
-                BuildingComponent->StartBuildingAction = StartBuildingAction;
-                BuildingComponent->PlaceAction = PlaceBuildingAction;
-                BuildingComponent->CancelAction = CancelBuildingAction;
-                BuildingComponent->RotateAction = RotateBuildingAction;
                 BuildingComponent->AttachComponent(this);
        }
 }
