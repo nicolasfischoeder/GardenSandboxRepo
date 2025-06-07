@@ -36,7 +36,7 @@ AGardenSandboxCharacter::AGardenSandboxCharacter()
        if (BuildMC.Succeeded())
        {
                LoadedBuildMapping = BuildMC.Object;
-       }
+
 
        // Load input actions
        static ConstructorHelpers::FObjectFinder<UInputAction> JumpAct(TEXT("/Game/FirstPerson/Input/Actions/IA_Jump.IA_Jump"));
@@ -83,6 +83,7 @@ AGardenSandboxCharacter::AGardenSandboxCharacter()
        if (RotateAct.Succeeded())
        {
                LoadedRotate = RotateAct.Object;
+
        }
 
        // Set size for collision capsule
