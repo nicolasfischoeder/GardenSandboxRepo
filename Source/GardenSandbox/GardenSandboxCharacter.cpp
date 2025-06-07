@@ -69,10 +69,15 @@ void AGardenSandboxCharacter::NotifyControllerChanged()
                 }
         }
 
-        if (BuildingComponent)
-        {
+       if (BuildingComponent)
+       {
+                BuildingComponent->BuildMappingContext = BuildMappingContext;
+                BuildingComponent->StartBuildingAction = StartBuildingAction;
+                BuildingComponent->PlaceAction = PlaceBuildingAction;
+                BuildingComponent->CancelAction = CancelBuildingAction;
+                BuildingComponent->RotateAction = RotateBuildingAction;
                 BuildingComponent->AttachComponent(this);
-        }
+       }
 }
 
 void AGardenSandboxCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
