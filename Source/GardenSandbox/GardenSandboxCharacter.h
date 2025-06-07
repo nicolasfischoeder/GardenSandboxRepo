@@ -68,6 +68,7 @@ class AGardenSandboxCharacter : public ACharacter
         UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
         UInputAction* RotateBuildingAction;
 
+public:
         /** Building Component */
         UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Building, meta = (AllowPrivateAccess = "true"))
         UBuildingComponent* BuildingComponent;
