@@ -67,8 +67,8 @@ void UBuildingComponent::StartPlacement()
         return;
     }
 
-    TSubclassOf<AActor> GhostToSpawn = BuildingData->GhostClass ? BuildingData->GhostClass : BuildingData->BuildingClass;
-    GhostActor = World->SpawnActor<AActor>(GhostToSpawn, FVector::ZeroVector, FRotator::ZeroRotator);
+    TSubclassOf<AGardenBuildingBase> GhostToSpawn = BuildingData->GhostClass ? BuildingData->GhostClass : BuildingData->BuildingClass;
+    GhostActor = World->SpawnActor<AGardenBuildingBase>(GhostToSpawn, FVector::ZeroVector, FRotator::ZeroRotator);
     if (GhostActor)
     {
         GhostActor->SetActorEnableCollision(false);

@@ -6,6 +6,7 @@
 #include "BuildingDataAsset.generated.h"
 
 class AGardenBuildingBase;
+class AGardenGhostBuildingBase;
 
 /** Data Asset describing a placeable building */
 UCLASS(BlueprintType)
@@ -19,7 +20,7 @@ public:
 
     /** Optional ghost class used while placing. If null BuildingClass is used */
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Building")
-    TSubclassOf<AActor> GhostClass;
+    TSubclassOf<AGardenGhostBuildingBase> GhostClass;
 
     /** Resources required to build */
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Resources")
