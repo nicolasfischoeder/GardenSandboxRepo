@@ -10,6 +10,9 @@
 #include "ResourceComponent.h"
 #include "HealthComponent.h"
 #include "Engine/CollisionProfile.h"
+#include "UObject/ConstructorHelpers.h"
+#include "InputMappingContext.h"
+#include "InputAction.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
@@ -21,7 +24,63 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 AGardenSandboxCharacter::AGardenSandboxCharacter()
 {
-	// Set size for collision capsule
+       // Load input mapping contexts
+       static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultMC(TEXT("/Game/FirstPerson/Input/IMC_Default.IMC_Default"));
+       if (DefaultMC.Succeeded())
+       {
+               DefaultMappingContext = DefaultMC.Object;
+       }
+
+       static ConstructorHelpers::FObjectFinder<UInputMappingContext> BuildMC(TEXT("/Game/FirstPerson/Input/IMC_Building.IMC_Building"));
+       if (BuildMC.Succeeded())
+       {
+               BuildMappingContext = BuildMC.Object;
+       }
+
+       // Load input actions
+       static ConstructorHelpers::FObjectFinder<UInputAction> JumpAct(TEXT("/Game/FirstPerson/Input/Actions/IA_Jump.IA_Jump"));
+       if (JumpAct.Succeeded())
+       {
+               JumpAction = JumpAct.Object;
+       }
+
+       static ConstructorHelpers::FObjectFinder<UInputAction> MoveAct(TEXT("/Game/FirstPerson/Input/Actions/IA_Move.IA_Move"));
+       if (MoveAct.Succeeded())
+       {
+               MoveAction = MoveAct.Object;
+       }
+
+       static ConstructorHelpers::FObjectFinder<UInputAction> LookAct(TEXT("/Game/FirstPerson/Input/Actions/IA_Look.IA_Look"));
+       if (LookAct.Succeeded())
+       {
+               LookAction = LookAct.Object;
+       }
+
+       static ConstructorHelpers::FObjectFinder<UInputAction> StartBuildAct(TEXT("/Game/FirstPerson/Input/Actions/IA_EnterBuildingMode.IA_EnterBuildingMode"));
+       if (StartBuildAct.Succeeded())
+       {
+               StartBuildingAction = StartBuildAct.Object;
+       }
+
+       static ConstructorHelpers::FObjectFinder<UInputAction> PlaceAct(TEXT("/Game/FirstPerson/Input/Actions/IA_Place.IA_Place"));
+       if (PlaceAct.Succeeded())
+       {
+               PlaceBuildingAction = PlaceAct.Object;
+       }
+
+       static ConstructorHelpers::FObjectFinder<UInputAction> CancelAct(TEXT("/Game/FirstPerson/Input/Actions/IA_CancelPlacement.IA_CancelPlacement"));
+       if (CancelAct.Succeeded())
+       {
+               CancelBuildingAction = CancelAct.Object;
+       }
+
+       static ConstructorHelpers::FObjectFinder<UInputAction> RotateAct(TEXT("/Game/FirstPerson/Input/Actions/IA_RotateBuilding.IA_RotateBuilding"));
+       if (RotateAct.Succeeded())
+       {
+               RotateBuildingAction = RotateAct.Object;
+       }
+
+       // Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
 		
 	// Create a CameraComponent	
