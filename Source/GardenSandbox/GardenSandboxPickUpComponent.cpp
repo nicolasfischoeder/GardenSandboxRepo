@@ -7,8 +7,8 @@
 
 UGardenSandboxPickUpComponent::UGardenSandboxPickUpComponent()
 {
-	// Setup the Sphere Collision
-	SphereRadius = 32.f;
+        // Setup the Sphere Collision
+        SetSphereRadius(32.f);
 }
 
 void UGardenSandboxPickUpComponent::BeginPlay()

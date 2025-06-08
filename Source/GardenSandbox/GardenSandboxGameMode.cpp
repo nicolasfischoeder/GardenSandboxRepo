@@ -12,3 +12,4 @@ AGardenSandboxGameMode::AGardenSandboxGameMode()
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 
 }
+
