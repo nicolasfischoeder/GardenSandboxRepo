@@ -4,6 +4,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
 #include "InputActionValue.h"
+#include "InputAction.h"
 #include "Buildings/GardenStructureGhost.h"
 #include "Buildings/GardenStructure.h"
 #include "GameFramework/PlayerController.h"
@@ -42,16 +43,6 @@ bool UBuildingComponent::AttachComponent(AGardenSandboxCharacter* TargetCharacte
             Subsystem->AddMappingContext(BuildMappingContext, 1);
         }
 
-        if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerController->InputComponent))
-        {
-            EnhancedInputComponent->BindAction(StartBuildingAction, ETriggerEvent::Triggered, this, &UBuildingComponent::StartPlacement);
-            EnhancedInputComponent->BindAction(PlaceAction, ETriggerEvent::Triggered, this, &UBuildingComponent::Place);
-            EnhancedInputComponent->BindAction(CancelAction, ETriggerEvent::Triggered, this, &UBuildingComponent::Cancel);
-            if (RotateAction)
-            {
-                EnhancedInputComponent->BindAction(RotateAction, ETriggerEvent::Triggered, this, &UBuildingComponent::Rotate);
-            }
-        }
     }
 
     return true;
@@ -137,6 +128,37 @@ void UBuildingComponent::Cancel()
         }
         bPlacementValid = true;
         bIsPlacing = false;
+    }
+}
+
+void UBuildingComponent::AddBindings(UEnhancedInputComponent* EIC)
+{
+    AddBindings(EIC, true, nullptr);
+}
+
+void UBuildingComponent::AddBindings(UEnhancedInputComponent* EIC, UInputAction* InRotateAction)
+{
+    AddBindings(EIC, true, InRotateAction);
+}
+
+void UBuildingComponent::AddBindings(UEnhancedInputComponent* EIC, bool bBindRotate, UInputAction* InRotateAction)
+{
+    if (!EIC)
+    {
+        return;
+    }
+
+    EIC->BindAction(StartBuildingAction, ETriggerEvent::Triggered, this, &UBuildingComponent::StartPlacement);
+    EIC->BindAction(PlaceAction, ETriggerEvent::Triggered, this, &UBuildingComponent::Place);
+    EIC->BindAction(CancelAction, ETriggerEvent::Triggered, this, &UBuildingComponent::Cancel);
+
+    if (bBindRotate)
+    {
+        UInputAction* ActionToBind = InRotateAction ? InRotateAction : RotateAction;
+        if (ActionToBind)
+        {
+            EIC->BindAction(ActionToBind, ETriggerEvent::Triggered, this, &UBuildingComponent::Rotate);
+        }
     }
 }
 
