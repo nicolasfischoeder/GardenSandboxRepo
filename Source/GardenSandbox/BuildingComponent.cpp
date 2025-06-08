@@ -4,13 +4,15 @@
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
 #include "InputActionValue.h"
+#include "Buildings/GardenStructureGhost.h"
+#include "Buildings/GardenStructure.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/CameraComponent.h"
-#include "Buildings/GardenGhostBuildingBase.h"
+#include "Buildings/GardenStructureGhost.h"
 #include "Components/PrimitiveComponent.h"
 #include "Materials/MaterialInterface.h"
 #include "Components/MeshComponent.h"
-#include "GardenBuildingBase.h"
+#include "Buildings/GardenBuildingBase.h"
 #include "ResourceComponent.h"
 #include "BuildingDataAsset.h"
 
@@ -69,7 +71,8 @@ void UBuildingComponent::StartPlacement()
     }
 
     TSubclassOf<AGardenBuildingBase> GhostToSpawn = BuildingData->GhostClass ? BuildingData->GhostClass : BuildingData->BuildingClass;
-    GhostActor = World->SpawnActor<AGardenBuildingBase>(GhostToSpawn, FVector::ZeroVector, FRotator::ZeroRotator);
+    AGardenBuildingBase* Tmp = World->SpawnActor<AGardenBuildingBase>(GhostToSpawn, FVector::ZeroVector, FRotator::ZeroRotator);
+    GhostActor = Cast<AGardenStructureGhost>(Tmp);
     if (GhostActor)
     {
         GhostActor->SetActorEnableCollision(false);

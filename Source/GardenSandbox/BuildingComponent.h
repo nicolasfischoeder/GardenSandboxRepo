@@ -2,6 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Buildings/GardenStructure.h"
+#include "Buildings/GardenStructureGhost.h"
 #include "BuildingComponent.generated.h"
 
 class AGardenSandboxCharacter;
@@ -67,7 +69,8 @@ protected:
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-    AGardenBuildingBase* GhostActor;
+    
+    AGardenStructureGhost* GhostActor;
     AGardenSandboxCharacter* Character;
     bool bIsPlacing;
     float CurrentYaw;

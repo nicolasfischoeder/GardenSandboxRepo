@@ -1,7 +1,7 @@
 #include "GardenBuildingBase.h"
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "HealthComponent.h"
+#include "../HealthComponent.h"
 
 AGardenBuildingBase::AGardenBuildingBase()
 {
@@ -17,7 +17,6 @@ AGardenBuildingBase::AGardenBuildingBase()
     MeshComponent->SetupAttachment(RootComponent);
 
 
-    HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 }
 
 void AGardenBuildingBase::OnConstruction(const FTransform& Transform)
