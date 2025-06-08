@@ -12,7 +12,7 @@ AGardenStructureGhost::AGardenStructureGhost()
         ValidMaterial = ValidMatObj.Object;
     }
 
-    static ConstructorHelpers::FObjectFinder<UMaterialInterface> InvalidMatObj(TEXT("/Game/Materials/Ghost/BuildingGhostMaterial_Green.BuildingGhostMaterial_Red"));
+    static ConstructorHelpers::FObjectFinder<UMaterialInterface> InvalidMatObj(TEXT("/Game/Materials/Ghost/BuildingGhostMaterial_Red.BuildingGhostMaterial_Red"));
     if (InvalidMatObj.Succeeded())
     {
         InvalidMaterial = InvalidMatObj.Object;
