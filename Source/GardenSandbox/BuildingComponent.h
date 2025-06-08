@@ -58,6 +58,14 @@ public:
 
     bool AttachComponent(AGardenSandboxCharacter* TargetCharacter);
 
+    /**
+    * Bind all input actions used by this component. Optionally supply a
+    * custom rotate action or disable the rotate binding entirely.
+    */
+    void AddBindings(UEnhancedInputComponent* EIC);
+    void AddBindings(UEnhancedInputComponent* EIC, UInputAction* InRotateAction);
+    void AddBindings(UEnhancedInputComponent* EIC, bool bBindRotate, UInputAction* InRotateAction = nullptr);
+
     void StartPlacement();
     void Place();
     void Cancel();
