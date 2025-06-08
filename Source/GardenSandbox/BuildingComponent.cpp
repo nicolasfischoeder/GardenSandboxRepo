@@ -85,7 +85,6 @@ void UBuildingComponent::StartPlacement()
                 Prim->SetCollisionEnabled(ECollisionEnabled::NoCollision);
             }
         }
-        GhostActor->GetComponents<UMeshComponent>(GhostMeshComponents);
         UpdateGhostVisual();
         bIsPlacing = true;
         CurrentYaw = 0.f;
@@ -111,7 +110,6 @@ void UBuildingComponent::Place()
     FRotator Rot = GhostActor->GetActorRotation();
     GhostActor->Destroy();
     GhostActor = nullptr;
-    GhostMeshComponents.Empty();
     bPlacementValid = true;
 
     if (Character && Character->ResourceComponent)
@@ -137,7 +135,6 @@ void UBuildingComponent::Cancel()
             GhostActor->Destroy();
             GhostActor = nullptr;
         }
-        GhostMeshComponents.Empty();
         bPlacementValid = true;
         bIsPlacing = false;
     }
@@ -250,21 +247,9 @@ void UBuildingComponent::UpdateGhostVisual()
     if (bPlacementValid != bNewValid)
     {
         bPlacementValid = bNewValid;
-        for (UMeshComponent* Mesh : GhostMeshComponents)
+        if (GhostActor)
         {
-            if (!Mesh)
-            {
-                continue;
-            }
-            UMaterialInterface* Mat = bPlacementValid ? ValidPlacementMaterial : InvalidPlacementMaterial;
-            if (Mat)
-            {
-                int32 Count = Mesh->GetNumMaterials();
-                for (int32 i = 0; i < Count; ++i)
-                {
-                    Mesh->SetMaterial(i, Mat);
-                }
-            }
+            GhostActor->SetPlacementValid(bPlacementValid);
         }
     }
 }
