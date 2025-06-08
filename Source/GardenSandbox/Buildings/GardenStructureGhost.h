@@ -12,4 +12,19 @@ class GARDENSANDBOX_API AGardenStructureGhost : public AGardenBuildingBase
 public:
     AGardenStructureGhost();
 
+    /**
+     * Change ghost material based on placement validity
+     */
+    UFUNCTION(BlueprintCallable, Category="Building")
+    void SetPlacementValid(bool bIsValid);
+
+protected:
+    /** Material used for valid placement */
+    UPROPERTY()
+    UMaterialInterface* ValidMaterial;
+
+    /** Material used for invalid placement */
+    UPROPERTY()
+    UMaterialInterface* InvalidMaterial;
+
 };

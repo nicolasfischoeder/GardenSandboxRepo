@@ -10,7 +10,6 @@ class AGardenSandboxCharacter;
 class UInputAction;
 class UInputMappingContext;
 class UMaterialInterface;
-class UMeshComponent;
 class UBuildingDataAsset;
 class AGardenBuildingBase;
 
@@ -74,7 +73,6 @@ private:
     AGardenSandboxCharacter* Character;
     bool bIsPlacing;
     float CurrentYaw;
-    TArray<UMeshComponent*> GhostMeshComponents;
     bool bPlacementValid;
 
     void UpdateGhostVisual();
