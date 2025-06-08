@@ -16,10 +16,12 @@
 #include "Buildings/GardenBuildingBase.h"
 #include "ResourceComponent.h"
 #include "BuildingDataAsset.h"
+#include "Net/UnrealNetwork.h"
 
 UBuildingComponent::UBuildingComponent()
 {
     PrimaryComponentTick.bCanEverTick = true;
+    SetIsReplicatedByDefault(true);
     GhostActor = nullptr;
     Character = nullptr;
     bIsPlacing = false;
@@ -55,6 +57,18 @@ void UBuildingComponent::StartPlacement()
         return;
     }
 
+    if (GetOwner()->HasAuthority())
+    {
+        SpawnGhost();
+    }
+    else
+    {
+        ServerStartPlacement();
+    }
+}
+
+void UBuildingComponent::SpawnGhost()
+{
     UWorld* World = GetWorld();
     if (!World)
     {
@@ -79,6 +93,21 @@ void UBuildingComponent::StartPlacement()
         UpdateGhostVisual();
         bIsPlacing = true;
         CurrentYaw = 0.f;
+    }
+}
+
+void UBuildingComponent::ServerStartPlacement_Implementation()
+{
+    SpawnGhost();
+}
+
+void UBuildingComponent::ServerUpdateGhostTransform_Implementation(const FVector& Location, const FRotator& Rotation)
+{
+    if (GhostActor)
+    {
+        GhostActor->SetActorLocation(Location);
+        GhostActor->SetActorRotation(Rotation);
+        UpdateGhostVisual();
     }
 }
 
@@ -178,7 +207,7 @@ void UBuildingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-    if (bIsPlacing && GhostActor && Character)
+    if (bIsPlacing && GhostActor && Character && Character->IsLocallyControlled())
     {
         FVector CamLoc;
         FRotator CamRot;
@@ -214,7 +243,13 @@ void UBuildingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
             GhostActor->SetActorLocation(Loc);
         }
 
-        GhostActor->SetActorRotation(FRotator(0.f, CamRot.Yaw + CurrentYaw, 0.f));
+        FRotator NewRot = FRotator(0.f, CamRot.Yaw + CurrentYaw, 0.f);
+        GhostActor->SetActorRotation(NewRot);
+
+        if (!GetOwner()->HasAuthority())
+        {
+            ServerUpdateGhostTransform(GhostActor->GetActorLocation(), NewRot);
+        }
 
         UpdateGhostVisual();
     }
@@ -274,5 +309,13 @@ void UBuildingComponent::UpdateGhostVisual()
             GhostActor->SetPlacementValid(bPlacementValid);
         }
     }
+}
+
+void UBuildingComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(UBuildingComponent, GhostActor);
+    DOREPLIFETIME(UBuildingComponent, bIsPlacing);
 }
 
