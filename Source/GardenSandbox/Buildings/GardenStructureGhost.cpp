@@ -1,4 +1,4 @@
-#include "Buildings/GardenStructureGhost.h"
+#include "GardenStructureGhost.h"
 
 AGardenStructureGhost::AGardenStructureGhost()
 {

@@ -36,7 +36,7 @@ AGardenSandboxCharacter::AGardenSandboxCharacter()
        if (BuildMC.Succeeded())
        {
                LoadedBuildMapping = BuildMC.Object;
-
+       }
 
        // Load input actions
        static ConstructorHelpers::FObjectFinder<UInputAction> JumpAct(TEXT("/Game/FirstPerson/Input/Actions/IA_Jump.IA_Jump"));

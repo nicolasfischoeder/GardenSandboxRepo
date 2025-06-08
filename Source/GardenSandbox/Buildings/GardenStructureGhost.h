@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Buildings/GardenGhostBuildingBase.h"
+#include "GardenGhostBuildingBase.h"
 #include "GardenStructureGhost.generated.h"
 
 /** Ghost class for AGardenStructure used during placement */

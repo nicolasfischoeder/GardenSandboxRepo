@@ -6,6 +6,9 @@ AGardenBuildingBase::AGardenBuildingBase()
 {
     PrimaryActorTick.bCanEverTick = false;
 
+    bReplicates = true;
+    SetReplicateMovement(true);
+
     MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
     RootComponent = MeshComponent;
 
