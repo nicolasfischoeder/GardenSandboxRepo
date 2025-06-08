@@ -20,8 +20,6 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
     USceneComponent* SceneRoot;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-    UStaticMeshComponent* MeshComponent;
 
 
 
