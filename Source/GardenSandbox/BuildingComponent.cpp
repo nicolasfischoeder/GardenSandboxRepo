@@ -52,8 +52,13 @@ bool UBuildingComponent::AttachComponent(AGardenSandboxCharacter* TargetCharacte
 
 void UBuildingComponent::StartPlacement()
 {
+    UE_LOG(LogTemp, Display, TEXT("StartPlacement"));   
     if (bIsPlacing || !BuildingData || !BuildingData->BuildingClass)
     {
+        if (bIsPlacing) UE_LOG(LogTemp, Display, TEXT("Is already placing."));
+        if (!BuildingData) UE_LOG(LogTemp, Display, TEXT("No BuildingData."));
+        if (!BuildingData->BuildingClass) UE_LOG(LogTemp, Display, TEXT("No BuildingData but BuildingClass."));
+
         return;
     }
 
@@ -74,12 +79,16 @@ void UBuildingComponent::SpawnGhost()
     {
         return;
     }
+    UE_LOG(LogTemp, Display, TEXT("Spawning Ghost"));   
 
-    TSubclassOf<AGardenBuildingBase> GhostToSpawn = BuildingData->GhostClass ? BuildingData->GhostClass : BuildingData->BuildingClass;
+    TSubclassOf<AGardenBuildingBase> GhostToSpawn = BuildingData->GhostClass;
     AGardenBuildingBase* Tmp = World->SpawnActor<AGardenBuildingBase>(GhostToSpawn, FVector::ZeroVector, FRotator::ZeroRotator);
     GhostActor = Cast<AGardenStructureGhost>(Tmp);
+
     if (GhostActor)
     {
+        UE_LOG(LogTemp, Display, TEXT("Ghost Spawned"));
+        UE_LOG(LogTemp, Display, TEXT("Ghost name: %s"),*GhostActor->GetName());
         GhostActor->SetActorEnableCollision(false);
         TArray<UActorComponent*> Comps;
         GhostActor->GetComponents(UPrimitiveComponent::StaticClass(), Comps);
@@ -93,7 +102,10 @@ void UBuildingComponent::SpawnGhost()
         UpdateGhostVisual();
         bIsPlacing = true;
         CurrentYaw = 0.f;
+        UE_LOG(LogTemp, Display, TEXT("Ghost SpawnProcedure completed."));   
+
     }
+
 }
 
 void UBuildingComponent::ServerStartPlacement_Implementation()
@@ -318,4 +330,5 @@ void UBuildingComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
     DOREPLIFETIME(UBuildingComponent, GhostActor);
     DOREPLIFETIME(UBuildingComponent, bIsPlacing);
 }
+
 
