@@ -2,6 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/SceneComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "HealthComponent.h"
 #include "GardenBuildingBase.generated.h"
 
@@ -12,6 +14,11 @@ class GARDENSANDBOX_API AGardenBuildingBase : public AActor
 
 public:
     AGardenBuildingBase();
+
+    virtual void OnConstruction(const FTransform& Transform) override;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    USceneComponent* SceneRoot;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
     UStaticMeshComponent* MeshComponent;

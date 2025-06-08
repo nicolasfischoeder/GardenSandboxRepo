@@ -1,4 +1,5 @@
 #include "GardenBuildingBase.h"
+#include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "HealthComponent.h"
 
@@ -9,8 +10,24 @@ AGardenBuildingBase::AGardenBuildingBase()
     bReplicates = true;
     SetReplicateMovement(true);
 
+    SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
+    RootComponent = SceneRoot;
+
     MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
-    RootComponent = MeshComponent;
+    MeshComponent->SetupAttachment(RootComponent);
+
 
     HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
+}
+
+void AGardenBuildingBase::OnConstruction(const FTransform& Transform)
+{
+    Super::OnConstruction(Transform);
+
+    if (MeshComponent && MeshComponent->GetStaticMesh())
+    {
+        const float HalfHeight = MeshComponent->GetStaticMesh()->GetBoundingBox().GetExtent().Z;
+        MeshComponent->SetRelativeLocation(FVector(0.f, 0.f, HalfHeight));
+
+    }
 }

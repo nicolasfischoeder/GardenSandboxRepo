@@ -11,4 +11,5 @@ class GARDENSANDBOX_API AGardenStructureGhost : public AGardenGhostBuildingBase
     GENERATED_BODY()
 public:
     AGardenStructureGhost();
+
 };
