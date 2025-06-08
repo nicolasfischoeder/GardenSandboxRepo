@@ -67,22 +67,34 @@ public:
     void AddBindings(UEnhancedInputComponent* EIC, bool bBindRotate, UInputAction* InRotateAction = nullptr);
 
     void StartPlacement();
+
+    UFUNCTION(Server, Reliable)
+    void ServerStartPlacement();
+
+    UFUNCTION(Server, Reliable)
+    void ServerUpdateGhostTransform(const FVector& Location, const FRotator& Rotation);
+
     void Place();
     void Cancel();
     void Rotate();
+
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-    
+
+    UPROPERTY(Replicated)
     AGardenStructureGhost* GhostActor;
     AGardenSandboxCharacter* Character;
+    UPROPERTY(Replicated)
     bool bIsPlacing;
     float CurrentYaw;
     bool bPlacementValid;
 
     void UpdateGhostVisual();
+    void SpawnGhost();
 };
 
