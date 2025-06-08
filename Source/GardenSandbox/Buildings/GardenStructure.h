@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GardenBuildingBase.h"
+#include "../GardenBuildingBase.h"
 #include "GardenStructure.generated.h"
 
 /** Simple structure building example */

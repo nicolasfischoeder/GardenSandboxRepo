@@ -6,6 +6,7 @@
 #include "InputActionValue.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/CameraComponent.h"
+#include "Buildings/GardenGhostBuildingBase.h"
 #include "Components/PrimitiveComponent.h"
 #include "Materials/MaterialInterface.h"
 #include "Components/MeshComponent.h"
